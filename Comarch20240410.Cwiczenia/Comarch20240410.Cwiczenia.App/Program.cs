@@ -32,7 +32,20 @@ namespace Comarch20240410.Cwiczenia.App
                             result = calculator.Subtract(x, y);
                             Console.WriteLine($"Wynik odejmowania {x} oraz {y} to {result}.");
                             break;
+                        case 3:
+                            Console.WriteLine("Podaj elementy tablicy (rozdzielone spacjami)");
+                            string userInput = Console.ReadLine();
+                            string[] sNumbers = userInput.Split(" ", StringSplitOptions.RemoveEmptyEntries);
+                            int[] input = new int[sNumbers.Length];
 
+                            for (int i = 0; i < sNumbers.Length; i++)
+                            {
+                                input[i] = int.Parse(sNumbers[i]);
+                            }
+
+                            calculator.Sort(input);
+                            Console.Write($"Wynik: [{string.Join(", ", input)}]");
+                            break;
                         default:
                             Console.WriteLine("Podana wartość jest poza zakresem.");
                             break;
@@ -68,6 +81,7 @@ namespace Comarch20240410.Cwiczenia.App
             Console.WriteLine("MENU: ");
             Console.WriteLine(" 1. Dodawanie");
             Console.WriteLine(" 2. Odejmowanie");
+            Console.WriteLine(" 3. Sortowanie");
         }
     }
 }
