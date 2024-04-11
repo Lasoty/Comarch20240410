@@ -14,10 +14,12 @@ namespace Comarch20240410.Cwiczenia.App.Tests
         {
             // Arrange
             Calculator calculator = new Calculator();
-            int expected = 4, x = 2, y = 2;
+            int expected = 4, a = 2, b = 2;
 
             // Act
-            int actual = calculator.Add(x, y);
+            int actual = calculator.Add(y: b, x: a);
+            int actual2 = calculator.Add(x: 4);
+
 
             // Assert
             Assert.AreEqual(expected, actual);
