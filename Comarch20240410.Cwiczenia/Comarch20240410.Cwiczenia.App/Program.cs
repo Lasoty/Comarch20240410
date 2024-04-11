@@ -9,12 +9,7 @@ namespace Comarch20240410.Cwiczenia.App
             bool czyKontynuacja = true;
             do
             {
-                Console.Clear();
-
-                Console.WriteLine("KALKULATOR v1.0.");
-                Console.WriteLine("MENU: ");
-                Console.WriteLine(" 1. Dodawanie");
-                Console.WriteLine(" 2. Odejmowanie");
+                ShowMenu();
 
                 Console.Write("Wybierz opcję: ");
 
@@ -23,25 +18,19 @@ namespace Comarch20240410.Cwiczenia.App
                 if (czyPoprawna == true)
                 {
                     Calculator calculator = new Calculator();
-                    int x, y, wynik;
+                    int x, y, result;
 
                     switch (wybor)
                     {
                         case 1:
-                            Console.Write("Podaj X: ");
-                            x = int.Parse(Console.ReadLine());
-                            Console.Write("Podaj Y: ");
-                            y = int.Parse(Console.ReadLine());
-                            wynik = calculator.Add(x, y);
-                            Console.WriteLine($"Wynik dodawania {x} oraz {y} to {wynik}.");
+                            GetXY(out x, out y);
+                            result = calculator.Add(x, y);
+                            Console.WriteLine($"Wynik dodawania {x} oraz {y} to {result}.");
                             break;
                         case 2:
-                            Console.Write("Podaj X: ");
-                            x = int.Parse(Console.ReadLine());
-                            Console.Write("Podaj Y: ");
-                            y = int.Parse(Console.ReadLine());
-                            wynik = calculator.Subtract(x, y);
-                            Console.WriteLine($"Wynik odejmowania {x} oraz {y} to {wynik}.");
+                            GetXY(out x, out y);
+                            result = calculator.Subtract(x, y);
+                            Console.WriteLine($"Wynik odejmowania {x} oraz {y} to {result}.");
                             break;
 
                         default:
@@ -61,6 +50,24 @@ namespace Comarch20240410.Cwiczenia.App
                 var wyborNaKoniec = Console.ReadKey();
                 czyKontynuacja = wyborNaKoniec.Key != ConsoleKey.N;
             } while (czyKontynuacja);
+        }
+
+        private static void GetXY(out int x, out int y)
+        {
+            Console.Write("Podaj X: ");
+            x = int.Parse(Console.ReadLine());
+            Console.Write("Podaj Y: ");
+            y = int.Parse(Console.ReadLine());
+        }
+
+        private static void ShowMenu()
+        {
+            Console.Clear();
+
+            Console.WriteLine("KALKULATOR v1.0.");
+            Console.WriteLine("MENU: ");
+            Console.WriteLine(" 1. Dodawanie");
+            Console.WriteLine(" 2. Odejmowanie");
         }
     }
 }
