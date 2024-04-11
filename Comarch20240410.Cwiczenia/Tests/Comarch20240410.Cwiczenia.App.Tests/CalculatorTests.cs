@@ -40,5 +40,17 @@ namespace Comarch20240410.Cwiczenia.App.Tests
             // Assert
             CollectionAssert.AreEqual(expected, actual);
         }
+
+        [Test]
+        public void SortShouldThrowExceptionWhenArrayIsEmpty()
+        {
+            // Arrange
+            Calculator calculator = new Calculator();
+            int[] input = Array.Empty<int>();
+
+            // Act & Assert
+
+            Assert.Throws<ArgumentException>(() => calculator.Sort(input));
+        }
     }
 }

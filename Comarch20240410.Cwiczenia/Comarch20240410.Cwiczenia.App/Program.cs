@@ -1,4 +1,5 @@
-﻿using Comarch20240410.Cwiczenia.App.Services;
+﻿using Comarch20240410.Cwiczenia.App.Model;
+using Comarch20240410.Cwiczenia.App.Services;
 
 namespace Comarch20240410.Cwiczenia.App
 {
@@ -43,8 +44,25 @@ namespace Comarch20240410.Cwiczenia.App
                                 input[i] = int.Parse(sNumbers[i]);
                             }
 
-                            calculator.Sort(input);
-                            Console.Write($"Wynik: [{string.Join(", ", input)}]");
+                            try
+                            {
+                                calculator.Sort(input);
+                                Console.Write($"Wynik: [{string.Join(", ", input)}]");
+                            }
+                            catch (Exception ex)
+                            {
+                                ShowError(ex.Message);
+                            }
+                            break;
+                        case 4:
+                            Console.Write("Podaj markę:");
+                            string marka = Console.ReadLine();
+                            Console.Write("Podaj model: ");
+                            string model = Console.ReadLine();
+
+                            Car car = new Car(marka, model);
+
+                            Console.WriteLine($"Utworzono auto: {car.Maker} {car.Model} {car.Car2?.Model} ");
                             break;
                         default:
                             Console.WriteLine("Podana wartość jest poza zakresem.");
@@ -65,6 +83,13 @@ namespace Comarch20240410.Cwiczenia.App
             } while (czyKontynuacja);
         }
 
+        private static void ShowError(string message)
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine($"Wystąpił błąd: {message}");
+            Console.ResetColor();
+        }
+
         private static void GetXY(out int x, out int y)
         {
             Console.Write("Podaj X: ");
@@ -82,6 +107,7 @@ namespace Comarch20240410.Cwiczenia.App
             Console.WriteLine(" 1. Dodawanie");
             Console.WriteLine(" 2. Odejmowanie");
             Console.WriteLine(" 3. Sortowanie");
+            Console.WriteLine(" 4. Zabawa autkami");
         }
     }
 }

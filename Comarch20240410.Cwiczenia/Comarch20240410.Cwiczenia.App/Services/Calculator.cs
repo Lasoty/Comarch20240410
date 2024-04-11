@@ -27,6 +27,10 @@ namespace Comarch20240410.Cwiczenia.App.Services
 
         public int[] Sort(int[] tablica)
         {
+            if (tablica.Length == 0)
+                throw new ArgumentException("Tablica nie może być pusta!");
+
+
             int n = tablica.Length - 1;
 
             // Pętla zewnętrzna przechodzi przez wszystkie elementy tablicy
