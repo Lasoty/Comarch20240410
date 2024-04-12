@@ -1,5 +1,9 @@
-﻿using Bibliotekarz.Shared.ModelDto;
+﻿using Bibliotekarz.Data.Context;
+using Bibliotekarz.Data.Model;
+using Bibliotekarz.Shared.ModelDto;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace Bibliotekarz.Server.Controllers;
 
@@ -7,16 +11,60 @@ namespace Bibliotekarz.Server.Controllers;
 [Route("[controller]")]
 public class BooksController : ControllerBase
 {
-    public BooksController()
-    {
+    private readonly ApplicationDbContext dbContext;
 
+    public BooksController(ApplicationDbContext dbContext)
+    {
+        this.dbContext = dbContext;
     }
 
     [HttpGet("All")]
     public async Task<IActionResult> GetAllBooks()
     {
-        List<BookDto> fakeData = GenerateFakeData();
-        return Ok(fakeData);
+        List<Book> books = await dbContext.Books
+            .Where(b => b.PageCount != null && b.PageCount > 0)
+            .OrderBy(b => b.Author).ThenByDescending(b => b.Title)
+            .ToListAsync();
+
+
+        IEnumerable<BookDto> booksDto = books.Select(b => new BookDto
+        {
+            Id = b.Id,
+            Author = b.Author,
+            Title = b.Title,
+            IsBorrowed = b.IsBorrowed,
+            PageCount = b.PageCount.HasValue ? b.PageCount.Value : 0,
+            BorrowerFirstName = b.Borrower?.FirstName,
+            BorrowerLastName = b.Borrower?.LastName
+        });
+        return Ok(booksDto);
+    }
+
+    [HttpPost("Add")]
+    public async Task<IActionResult> AddBook(AddBookDto request)
+    {
+        Book book = new Book()
+        {
+            Author = request.Author,
+            Title = request.Title,
+            PageCount = request.PageCount,
+            IsBorrowed = request.IsBorrowed
+        };
+
+        if (request.IsBorrowed)
+        {
+            Customer customer = new Customer
+            {
+                FirstName = request.BorrowerFirstName,
+                LastName = request.BorrowerLastName,
+            };
+
+            book.Borrower = customer;
+        }
+
+        dbContext.Books.Add(book);
+        await dbContext.SaveChangesAsync();
+        return Ok(book);
     }
 
     private List<BookDto> GenerateFakeData()
