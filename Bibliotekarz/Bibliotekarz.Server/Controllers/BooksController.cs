@@ -21,7 +21,7 @@ public class BooksController : ControllerBase
     [HttpGet("All")]
     public async Task<IActionResult> GetAllBooks()
     {
-        List<Book> books = await dbContext.Books
+        List<Book> books = await dbContext.Books.Include(b => b.Borrower)
             .Where(b => b.PageCount != null && b.PageCount > 0)
             .OrderBy(b => b.Author).ThenByDescending(b => b.Title)
             .ToListAsync();
