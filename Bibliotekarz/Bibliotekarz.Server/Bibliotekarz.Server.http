@@ -1,0 +1,6 @@
+@Bibliotekarz.Server_HostAddress = http://localhost:5204
+
+GET {{Bibliotekarz.Server_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
